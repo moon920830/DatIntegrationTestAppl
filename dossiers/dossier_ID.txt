@@ -1,0 +1,45 @@
+<data>
+	<displayHeader>false</displayHeader>
+
+	// vehicle filter restriction, one of ALL, REPAIR or APPRAISAL, default = ALL
+	<Restriction></Restriction>
+
+	// prohibit the change of Restriction (if true the Restriction selection is hidden)
+	<noRestrictionInp></noRestrictionInp>
+
+	// Country code for the target market (international licence plate country code, 3 chars)
+	// corresponds to the datCountryIndicator (Values: 'D', 'A', 'CH', 'I', 'E', 'F', ...)
+	<CountryCode></CountryCode>
+
+	// DossierID eg. '136828'
+	<az></az>
+
+	// DAT Europa Code eg. '019050850010006'
+	<DatECode></DatECode>
+
+	// Container eg. 'DE004'
+	<Container></Container>
+
+	// VehicleIdentification Number
+	<VehicleIdentNumber></VehicleIdentNumber>
+
+	// KBA
+	<KbaCode></KbaCode>
+
+	// initial registration date in milliseconds since 1/1/1970
+	<InitialRegistration></InitialRegistration>
+	<constructionTime></constructionTime>
+
+	//equipment filter, one of ALL, GENERAL, EXTERIOR, INTERIOR, CHASSIS, AGGREGATE or GLASS (default = ALL)
+	<equFilter></equFilter>
+
+	// comma separated list of dat standard/orptional equipment numbers (eg. '23605,73606')
+	<equDatNr></equDatNr>
+
+	// comma separated list of additional equipments (eg. 'auxiliary heating, auxiliary lights')
+	<equAdd></equAdd>
+
+	// save selection at the end of process
+	<withSaveAsEvent>true</withSaveAsEvent>
+	<eventName>from external</eventName>
+</data>

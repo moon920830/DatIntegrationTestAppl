@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                     <ns2:Dossiers xmlns:ns2="http://www.dat.de/vxs" source="SD3" type="completeEvaluation">
+                        <ns2:Dossier>
+                           <ns2:Name>POST import sample</ns2:Name>
+                           <ns2:Country>DE</ns2:Country>
+                             <ns2:Language>DE_de</ns2:Language>
+                             <ns2:Vehicle>
+                                 <ns2:VehicleIdentNumber>12345678901234567</ns2:VehicleIdentNumber>
+                                 <ns2:DatECode>012850950160006</ns2:DatECode>
+                                 <ns2:Container>DE004</ns2:Container>
+                                 <ns2:ConstructionTime>5123</ns2:ConstructionTime>
+                                 <ns2:InitialRegistration>2012-08-12+02:00</ns2:InitialRegistration>
+                                 <ns2:MileageEstimated>43000</ns2:MileageEstimated>
+                                 <ns2:MileageOdometer>43000</ns2:MileageOdometer>
+                                 <ns2:Country>DE</ns2:Country>
+                                 <ns2:Equipment>
+                                     <ns2:SpecialEquipment>
+                                         <ns2:EquipmentPosition>
+                                             <ns2:DatEquipmentId>14200</ns2:DatEquipmentId>
+                                         </ns2:EquipmentPosition>
+                                         <ns2:EquipmentPosition>
+                                             <ns2:DatEquipmentId>16007</ns2:DatEquipmentId>
+                                         </ns2:EquipmentPosition>
+                                     </ns2:SpecialEquipment>
+                                 </ns2:Equipment>
+                             </ns2:Vehicle>
+                        </ns2:Dossier>
+                     </ns2:Dossiers>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>SilverDAT</title>
+    <link rel="stylesheet" href="scripts/libs/w3.css">
+    <link rel="stylesheet" href="scripts/styles.css">
+    <script src="scripts/libs/jquery-3.1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="http://www.dat.de/sphinx/js/externalSphinx.js"></script>
+    <script language="JavaScript" src="http://www.dat.de/sphinx/js/lazyload.js" type="text/javascript"></script>
+    <script src="scripts/userData.js"></script>
+    <script src="scripts/appData.js"></script>
+    <script>
+        var active, xmlDom, subId;
+    </script>
+</head>
+<body>
+    <div class="w3-container" id="div_main" align="center">
+        <div id="logo"><a href="http://www.dat.de" target="_blank"><img src="gfx/dat.jpg"></a></div>
+        <h1>DEUTSCHE AUTOMOBIL TREUHAND GmbH</h1>
+        <a href="javascript:appFunctions.quitAppl()"><h3 style="text-transform: none">SilverDAT myClaim</h3></a>
+
+        <div id="div_credentials" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue round">
+                <h3>credentials</h3>
+            </div>
+            <div class="w3-container" align="left">
+                <div class="w3-container w3-half" >
+                    <p>
+                        <label>customer-number</label>
+                        <input type="text" maxlength="7" class="w3-input w3-border w3-round" id="inpCustomerNumber">
+                    </p>
+                    <p>
+                        <label>customer-login</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerLogin">
+                    </p>
+                    <p>
+                        <label>claim id</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpClaim">
+                    </p>
+                    <p>
+                        <input class="w3-check" id="chkFullscreen" type="checkbox" checked><label class="w3-validate">full screen</label>
+                    </p>
+                </div>
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>customer-signature</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerSignature">
+                    </p>
+                    <p>
+                        <label>external host</label>
+                        <select class="w3-select w3-border w3-round" id="selHosts" style="width:calc(100% - 5em)"></select><button class="addRmv" id="btnAddHost">+</button><button id="btnRemoveHost" class="addRmv">-</button>
+                    </p>
+
+                </div>
+            </div>
+            <br/><button class="w3-btn w3-blue w3-round" onclick="start()">start myclaim</button><br/><br/>
+            <input class="w3-check" id="chkLocalStorage" type="checkbox" checked><label class="w3-validate">save settings</label> |&nbsp&nbsp<a href="javascript:appFunctions.clearUserData('MC')">RESTORE SETTINGS</a><br/>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // -- user-data/start-up ----------------------------------------------------------------------------------------------------------------------------------------------
+            var loadedFromLocalStorage = appFunctions.loadUserData("MC");
+            setTimeout(function () {
+                $("#inpCustomerNumber").val(userData.customerNumber);
+                $("#inpCustomerLogin").val(userData.customerLogin);
+                $("#inpCustomerSignature").val(userData.customerSignature);
+
+                $.each(appProperties.common.hosts.concat(userData.additionalHosts), function (i, val) {
+                    $("#selHosts").append("<option value='" + val + "'>" + val + "</option>")
+                });
+
+                $("#selHosts option:contains('" + userData.selectedHost + "')").prop("selected", true);
+                if (loadedFromLocalStorage) {
+                    $("#inpClaim").val(userData.claim);
+                    $("#chkFullscreen").prop("checked", userData.fullscreen);
+                }
+                appFunctions.displayContainer(1);
+            }, 500);
+
+            // -- event listeners -------------------------------------------------------------------------------------------------------------------------------------------------
+            $(window).on("resize", appFunctions.resizeFunc);
+            $("#btnAddHost").on("click", appFunctions.addHost);
+            $("#btnRemoveHost").on("click", appFunctions.removeHost);
+
+            $("#chkLocalStorage").on("change",function(){ if (window.localStorage) localStorage.setItem("saveMC", JSON.stringify({save: $("#chkLocalStorage").prop("checked")}))});
+            if (window.localStorage && localStorage.getItem("saveMC")!=null) $("#chkLocalStorage").prop("checked", JSON.parse(localStorage.getItem("saveMC")).save);
+
+            appFunctions.resizeFunc();
+        });
+        // -- local Storage -------------------------------------------------------------------------------------------------------------------------------------------------------
+        function save() { if($("#chkLocalStorage").prop("checked")) appFunctions.storeUserData("CP"); }
+        function storeObject() {
+            var storageObject = {
+                customerNumber: $("#inpCustomerNumber").val(),
+                customerLogin: $("#inpCustomerLogin").val(),
+                customerSignature: $("#inpCustomerSignature").val(),
+                selectedHost: $("#selHosts option:selected").text(),
+                additionalHosts: [],
+                claim: $("#inpClaim").val(),
+                fullscreen: $("#chkFullscreen").prop("checked")
+            };
+            $.each($("#selHosts option").slice(appProperties.common.hosts.length), function(index, val) { storageObject.additionalHosts.push($(val).val()); });
+            return storageObject;
+        }
+        // -- controls ------------------------------------------------------------------------------------------------------------------------------------------------------------
+        function start()    {
+            save();
+            var req = "http://" + $("#selHosts option:selected").val() + "/myClaim/json/security/Login?signature=" + $("#inpCustomerSignature").val() + "&customerNumber=" + $("#inpCustomerNumber").val() + "&login=" + $("#inpCustomerLogin").val() + "&redirect=inbox.jsp#claim?subView=vro_calculation" + (($("#inpClaim").val()?"&claim="+ $("#inpClaim").val():"")) + "&fullscreen=" + (($("#chkFullscreen").prop("checked"))?"true":"false");
+            window.location = req;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>SilverDAT</title>
+    <link rel="stylesheet" href="scripts/libs/w3.css">
+    <link rel="stylesheet" href="scripts/styles.css">
+    <script src="scripts/libs/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="http://www.dat.de/sphinx/js/externalSphinx.js"></script>
+    <script language="JavaScript" src="http://www.dat.de/sphinx/js/lazyload.js" type="text/javascript"></script>
+    <script src="scripts/userData.js"></script>
+    <script src="scripts/appData.js"></script>
+    <script>
+        var active, xmlDom, subId;
+    </script>
+</head>
+<body>
+    <div class="w3-container" id="div_main" align="center">
+        <div id="logo"><a href="http://www.dat.de" target="_blank"><img src="gfx/dat.jpg"></a></div>
+        <h1>DEUTSCHE AUTOMOBIL TREUHAND GmbH</h1>
+        <a href="javascript:appFunctions.quitAppl()"><h3 style="text-transform: none">SilverDAT identify</h3></a>
+
+        <div id="div_credentials" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue round">
+                <h3>credentials</h3>
+            </div>
+            <div class="w3-container" align="left">
+                <div class="w3-container w3-half" >
+                    <p>
+                        <label>customer-number</label>
+                        <input type="text" maxlength="7" class="w3-input w3-border w3-round" id="inpCustomerNumber">
+                    </p>
+                    <p>
+                        <label>customer-login</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerLogin">
+                    </p>
+                    <p>
+                        <label>first page</label>
+                        <select id="selPageFirst" class="w3-select w3-border w3-round"></select>
+                    </p>
+                    <p>
+                        <input class="w3-check" id="chkImport" type="checkbox" checked><label class="w3-validate">send parameters</label><input type="file" id="inpVxsFile" name="files1" caption="pick" style="width:5em" hidden/><button id="btnImport">...</button>
+                    </p>
+                </div>
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>customer-signature</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerSignature">
+                    </p>
+                    <p>
+                        <label>external host</label>
+                        <select class="w3-select w3-border w3-round" id="selHosts" style="width:calc(100% - 5em)"></select><button class="addRmv" id="btnAddHost">+</button><button id="btnRemoveHost" class="addRmv">-</button>
+                    </p>
+                    <p>
+                        <label>last page</label>
+                        <select id="selPageLast" class="w3-select w3-border w3-round"></select>
+                    </p>
+                </div>
+            </div>
+            <div id="divInput" style="display:none">
+                <div class="w3-container w3-blue roundTop">
+                    <h3>parameters</h3>
+                </div>
+                <textarea name="txtInput" id="txtInput" class="w3-input w3-border roundBtm"></textarea>
+            </div>
+            <br/><button class="w3-btn w3-blue w3-round" onclick="start()">start integration</button><br/><br/>
+            <input class="w3-check" id="chkLocalStorage" type="checkbox" checked><label class="w3-validate">save settings</label> |&nbsp&nbsp<a href="javascript:appFunctions.clearUserData('ID')">RESTORE SETTINGS</a><br/>
+        </div>
+        <div id="div_integration" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue roundTop">
+                <h3>integration</h3>
+            </div>
+            <div id="iframe_container"></div>
+            <button class="w3-btn w3-blue w3-round" onclick="back()">quit integration</button>
+        </div>
+        <div id="div_response" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue roundTop">
+                <h3>response</h3>
+                <div id="outputType" style="position: inherit; bottom:1em; right:1em">
+                    <input class="outputRender w3-radio" id="orPlain" name="outputRendering" type="radio" checked><label>vxs</label></input>
+                    <input class="outputRender w3-radio" id="orTv" name="outputRendering"  type="radio"><label>tree</label></input>
+                </div>
+            </div>
+            <textarea name="txtOut" id="txtOut" class="w3-input w3-border roundBtm" readonly></textarea>
+            <iframe id="iframeTV" class="w3-border roundBtm"></iframe>
+            <br/><button class="w3-btn w3-blue w3-round" onclick="back()">back to landing page</button>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // -- user-data/start-up ----------------------------------------------------------------------------------------------------------------------------------------------
+            var loadedFromLocalStorage = appFunctions.loadUserData("ID");
+            setTimeout(function () {
+                $("#inpCustomerNumber").val(userData.customerNumber);
+                $("#inpCustomerLogin").val(userData.customerLogin);
+                $("#inpCustomerSignature").val(userData.customerSignature);
+
+                $.each(appProperties.common.hosts.concat(userData.additionalHosts), function (i, val) {
+                    $("#selHosts").append("<option value='" + val + "'>" + val + "</option>")
+                });
+                $.each(appProperties.identify.pages, function(key, val){
+                    $("#selPageFirst").append("<option value='" + val + "'>" + val + "</option>");
+                    $("#selPageLast").append("<option value='" + val + "'>" + val + "</option>");
+                });
+
+                $("#selHosts option:contains('" + userData.selectedHost + "')").prop("selected", true);
+
+                if(loadedFromLocalStorage) {
+                    $("#selPageFirst option[value='" + userData.firstPage + "']").prop("selected", true);
+                    $("#selPageLast option[value='" + userData.lastPage + "']").prop("selected", true);
+                    $("#txtInput").val(userData.dossier);
+                    $("#chkImport").prop("checked", userData.import);
+                } else {
+                    $("#txtInput").val("<data>\n\t<displayHeader>false</displayHeader>\n\t<withSaveAsEvent>true</withSaveAsEvent>\n\t<eventName>from external</eventName>\n</data>");
+                }
+                toggleDisplayInput();
+                appFunctions.displayContainer(1);
+            }, 500);
+
+            // -- event listeners -------------------------------------------------------------------------------------------------------------------------------------------------
+            $('#chkImport').on("change", toggleDisplayInput);
+            $("#btnImport").on("click", function () { $("#inpVxsFile").trigger('click'); });
+            $("#inpVxsFile").on("change", appFunctions.handleFileOpen);
+            $(window).on("resize", appFunctions.resizeFunc);
+            $(".outputRender").on("change",appFunctions.toggleOutputRendering);
+
+            $("#btnAddHost").on("click", appFunctions.addHost);
+            $("#btnRemoveHost").on("click", appFunctions.removeHost);
+
+            $("#chkLocalStorage").on("change",function(){ if (window.localStorage) localStorage.setItem("saveID", JSON.stringify({save: $("#chkLocalStorage").prop("checked")}))});
+            if (window.localStorage && localStorage.getItem("saveID")!=null) $("#chkLocalStorage").prop("checked", JSON.parse(localStorage.getItem("saveID")).save);
+
+            appFunctions.resizeFunc();
+            appFunctions.toggleOutputRendering();
+            appFunctions.prepareIframeForTreeview("iframeTV");
+        });
+        // -- local Storage -------------------------------------------------------------------------------------------------------------------------------------------------------
+        function save() { if($("#chkLocalStorage").prop("checked")) appFunctions.storeUserData("ID"); }
+        function storeObject() {
+            var storageObject = {
+                customerNumber: $("#inpCustomerNumber").val(),
+                customerLogin: $("#inpCustomerLogin").val(),
+                customerSignature: $("#inpCustomerSignature").val(),
+                selectedHost: $("#selHosts option:selected").text(),
+                additionalHosts: [],
+                firstPage: $("#selPageFirst option:selected").val(),
+                lastPage: $("#selPageLast option:selected").val(),
+                dossier: $("#txtInput").val(),
+                import: $("#chkImport").prop("checked")
+            };
+            $.each($("#selHosts option").slice(appProperties.common.hosts.length), function(index, val) { storageObject.additionalHosts.push($(val).val()); });
+            return storageObject;
+        }
+        // -- controls ------------------------------------------------------------------------------------------------------------------------------------------------------------
+        function start()    { save(); appFunctions.displayContainer(2); setUpSphinx(); }
+        function back()     { if(document.getElementById("sphinx.iFrame") != null) sphinx.deleteIframe(); appFunctions.displayContainer(1); }
+
+        // -- identify specific ---------------------------------------------------------------------------------------------------------------------------------------------------
+        function toggleDisplayInput() {
+            if ($('#chkImport').prop("checked")) { $("#divInput").fadeIn(); $("#btnImport").css("display",""); }
+            else { $("#divInput").fadeOut(); $("#btnImport").css("display","none"); }
+        }
+        function errorFunc(e) { alert('Error: ' + e); /*back();*/ }
+        function callbackFromSphinx(object, xml) {
+            xmlDom = $.parseXML(xml.xml.replace(/ +(?= )/g, '').replace(/\>\s+\</g, '><'));
+            appFunctions.resetIframe("iframeTV");
+            if(xmlDom==null) {
+                $("#txtOut").val("<empty/>");
+                $("#iframeTV").contents().find("body").append($("<ul><li>Empty</li></ul>"));
+            } else if (xmlDom.hasChildNodes) {
+                $("#txtOut").val(appFunctions.formatRecursive(xmlDom, 0));
+                $("#iframeTV").contents().find("body").append($(appFunctions.formatRecursive2(xmlDom)));
+            }
+            appFunctions.displayContainer(3);
+        }
+        function setUpSphinx() {
+            if (typeof sphinx != 'undefined') {
+                if (document.getElementById("sphinx.iFrame") != null) sphinx.deleteIframe();
+                sphinx.firstPage = $("#selPageFirst option:selected").text();
+                sphinx.lastPage = $("#selPageLast option:selected").text();
+                sphinx.host = "http://" + $("#selHosts option:selected").text() + '/DATECodeSelection';
+
+                sphinx.init(sphinx.host + "/vehicleSelection/model.tmpl", $("#selPageFirst option:selected").text(), document.getElementById('iframe_container'), "modelIFrame", null, callbackFromSphinx);
+                var loginInfo = sphinx.encryptPassword(new DatSignatureInformation($("#inpCustomerSignature").val(), $("#inpCustomerNumber").val(), $("#inpCustomerLogin").val()));
+                var params = "<?xml version=\"1.0\" ?>" + $("#chkImport").prop("checked")?$("#txtInput").val():"";
+                try {
+                    sphinx.execute(loginInfo, params, errorFunc);
+                }
+                catch (e) {
+                    errorFunc(e);
+                }
+            } else {
+                alert('externalSphinx.js not loaded.');
+                appFunctions.displayContainer(1);
+            }
+        }
+    </script>
+</body>
+</html>

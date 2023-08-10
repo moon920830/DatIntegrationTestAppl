@@ -1,0 +1,168 @@
+<ns2:Dossiers type="completeEvaluation" source="SD3" xmlns:ns2="http://www.dat.de/vxs">
+	<ns2:Dossier>
+		<ns2:Country>DE</ns2:Country>
+		<ns2:Language>jp_JP</ns2:Language>
+		<ns2:DataVersion>1</ns2:DataVersion>
+		<ns2:DatCustomerId>1300553</ns2:DatCustomerId>
+		<ns2:DossierType>evaluation</ns2:DossierType>
+		<ns2:DatCustomerAddress>
+			<ns2:Title>titleCompany</ns2:Title>
+			<ns2:CompanyName>DAT - Intern</ns2:CompanyName>
+			<ns2:NameLong>Schulung SST-Partner</ns2:NameLong>
+			<ns2:Country>DE</ns2:Country>
+			<ns2:CustomerNumber>1300553</ns2:CustomerNumber>
+			<ns2:CustomerType>1300553</ns2:CustomerType>
+			<ns2:Street>Hellmuth-Hirth-Str.</ns2:Street>
+			<ns2:StreetNumber>1</ns2:StreetNumber>
+			<ns2:StreetZipCode>73760</ns2:StreetZipCode>
+			<ns2:StreetCity>Ostfildern</ns2:StreetCity>
+			<ns2:PhoneBusiness>+49 711/4503-0</ns2:PhoneBusiness>
+			<ns2:UsageFlag>9</ns2:UsageFlag>
+		</ns2:DatCustomerAddress>
+		<ns2:Vehicle>
+			<ns2:VehicleIdentNumber/>
+			<ns2:DatECode>022100030120001</ns2:DatECode>
+			<ns2:Container>DE001</ns2:Container>
+			<ns2:ConstructionYear origin="dat">1000</ns2:ConstructionYear>
+			<ns2:ConstructionTime>3620</ns2:ConstructionTime>
+			<ns2:InitialRegistration>2000-02-02+01:00</ns2:InitialRegistration>
+			<ns2:MileageEstimated>210000</ns2:MileageEstimated>
+			<ns2:MileageOdometer>210000</ns2:MileageOdometer>
+			<ns2:SalesDescription>Hijet</ns2:SalesDescription>
+			<ns2:VehicleTypeName>Transporter</ns2:VehicleTypeName>
+			<ns2:ManufacturerName origin="dat">Daihatsu</ns2:ManufacturerName>
+			<ns2:BaseModelName origin="dat">Hijet</ns2:BaseModelName>
+			<ns2:SubModelName origin="dat">Kasten (06.1998->)</ns2:SubModelName>
+			<ns2:ContainerName>DE - Ka5 1.3 G-Kat, 1999 - 2003</ns2:ContainerName>
+			<ns2:VehicleType>2</ns2:VehicleType>
+			<ns2:Manufacturer>210</ns2:Manufacturer>
+			<ns2:BaseModel>3</ns2:BaseModel>
+			<ns2:SubModel>12</ns2:SubModel>
+			<ns2:Country>DE</ns2:Country>
+			<ns2:VinActive>false</ns2:VinActive>
+			<ns2:VinEquipmentChanged>false</ns2:VinEquipmentChanged>
+			<ns2:VinChecksum/>
+			<ns2:SubModelVariant>1</ns2:SubModelVariant>
+			<ns2:RegistrationData/>
+			<ns2:Engine>
+				<ns2:FuelMethod origin="dat">gasoline</ns2:FuelMethod>
+				<ns2:EnginePowerKw origin="dat">48</ns2:EnginePowerKw>
+				<ns2:EnginePowerHp origin="dat">65</ns2:EnginePowerHp>
+				<ns2:Cylinders origin="dat">4</ns2:Cylinders>
+				<ns2:Capacity origin="dat">1296</ns2:Capacity>
+				<ns2:Consumption>7.4</ns2:Consumption>
+				<ns2:Co2Emission>175.38</ns2:Co2Emission>
+			</ns2:Engine>
+			<ns2:TechInfo>
+				<ns2:StructureType>Ka</ns2:StructureType>
+				<ns2:StructureDescription>Kastenwagen</ns2:StructureDescription>
+				<ns2:CountOfAxles origin="dat">2</ns2:CountOfAxles>
+				<ns2:WheelBase origin="dat">1810</ns2:WheelBase>
+				<ns2:VehicleDoors origin="dat">5</ns2:VehicleDoors>
+				<ns2:PowerHp origin="dat">65</ns2:PowerHp>
+				<ns2:PowerKw origin="dat">48.0</ns2:PowerKw>
+				<ns2:Capacity origin="dat">1296</ns2:Capacity>
+				<ns2:Cylinder origin="dat">4</ns2:Cylinder>
+				<ns2:CylinderArrangement origin="dat">R </ns2:CylinderArrangement>
+				<ns2:GearboxType>manual</ns2:GearboxType>
+				<ns2:OriginalTireSizeAxle1>155R12</ns2:OriginalTireSizeAxle1>
+				<ns2:Consumption origin="dat">7.4</ns2:Consumption>
+				<ns2:Co2Emission origin="dat">175.38</ns2:Co2Emission>
+				<ns2:Drive origin="dat">HA </ns2:Drive>
+				<ns2:EngineCycle origin="dat">4</ns2:EngineCycle>
+				<ns2:FuelMethod origin="dat">Benzin</ns2:FuelMethod>
+				<ns2:FuelMethodType origin="dat">B</ns2:FuelMethodType>
+				<ns2:PermissableTotalWeight origin="dat">1550</ns2:PermissableTotalWeight>
+				<ns2:ProductGroupName>Kleintransporter / Lkw</ns2:ProductGroupName>
+				<ns2:FuelmethodAbbr>BN</ns2:FuelmethodAbbr>
+			</ns2:TechInfo>
+			<ns2:Equipment>
+				<ns2:EquipmentValue origin="dat">0</ns2:EquipmentValue>
+				<ns2:EquipmentValueGross origin="dat">0.00</ns2:EquipmentValueGross>
+				<ns2:OriginalEquipmentValue origin="dat">0</ns2:OriginalEquipmentValue>
+				<ns2:OriginalEquipmentValueGross origin="dat">0.00</ns2:OriginalEquipmentValueGross>
+				<ns2:EquipmentValueType>calculated value</ns2:EquipmentValueType>
+				<ns2:SeriesEquipment>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>8300</ns2:DatEquipmentId>
+						<ns2:Description>Karosserie/Aufbau: Hochraum</ns2:Description>
+					</ns2:EquipmentPosition>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>8400</ns2:DatEquipmentId>
+						<ns2:Description>Karosserie/Aufbau: Kasten</ns2:Description>
+					</ns2:EquipmentPosition>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>47002</ns2:DatEquipmentId>
+						<ns2:Description>Radstand 1810 mm</ns2:Description>
+					</ns2:EquipmentPosition>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>70406</ns2:DatEquipmentId>
+						<ns2:Description>Antriebsart: Heckantrieb</ns2:Description>
+						<ns2:EquipmentGroup>HIAN</ns2:EquipmentGroup>
+					</ns2:EquipmentPosition>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>75001</ns2:DatEquipmentId>
+						<ns2:Description>Getriebe 4-Gang</ns2:Description>
+						<ns2:EquipmentGroup>SG4</ns2:EquipmentGroup>
+						<ns2:GearBoxType>manual</ns2:GearBoxType>
+						<ns2:NrOfGears>4</ns2:NrOfGears>
+					</ns2:EquipmentPosition>
+					<ns2:EquipmentPosition>
+						<ns2:DatEquipmentId>81701</ns2:DatEquipmentId>
+						<ns2:Description>Motor 1,3 Ltr. - 48 kW 16V KAT</ns2:Description>
+						<ns2:EquipmentType>engine</ns2:EquipmentType>
+					</ns2:EquipmentPosition>
+				</ns2:SeriesEquipment>
+			</ns2:Equipment>
+			<ns2:Tires>
+				<ns2:Axles/>
+			</ns2:Tires>
+		</ns2:Vehicle>
+		<ns2:VAT>
+			<ns2:VatType>regular</ns2:VatType>
+			<ns2:VatAtConstructionTime origin="dat">16</ns2:VatAtConstructionTime>
+			<ns2:BaseVatAtConstructionTime origin="dat">16</ns2:BaseVatAtConstructionTime>
+			<ns2:AddOnTaxApplication>before vat</ns2:AddOnTaxApplication>
+			<ns2:VatAtValuationTime origin="dat">19</ns2:VatAtValuationTime>
+		</ns2:VAT>
+		<ns2:Valuation>
+			<ns2:OriginalPrice origin="dat">8396</ns2:OriginalPrice>
+			<ns2:OriginalPriceGross origin="dat">9740</ns2:OriginalPriceGross>
+			<ns2:BasePrice origin="dat">708.00</ns2:BasePrice>
+			<ns2:ReferenceMileage>233000</ns2:ReferenceMileage>
+			<ns2:MileageCorr origin="dat">57.11</ns2:MileageCorr>
+			<ns2:InitialRegistrationCorr origin="dat">-11.48</ns2:InitialRegistrationCorr>
+			<ns2:BasePrice2 origin="dat">753.63</ns2:BasePrice2>
+			<ns2:EquipmentSign>calculated value</ns2:EquipmentSign>
+			<ns2:EquipmentOriginalPrice origin="dat">0</ns2:EquipmentOriginalPrice>
+			<ns2:EquipmentPrice origin="dat">0</ns2:EquipmentPrice>
+			<ns2:ValuationCorrection origin="dat">0.00</ns2:ValuationCorrection>
+			<ns2:BasePrice3 origin="dat">753.63</ns2:BasePrice3>
+			<ns2:ConditionCorrectionPerc origin="dat">100.00</ns2:ConditionCorrectionPerc>
+			<ns2:SalesPrice origin="dat">753.63</ns2:SalesPrice>
+			<ns2:SalesPriceGross origin="dat">896.82</ns2:SalesPriceGross>
+			<ns2:Margin origin="dat">414.50</ns2:Margin>
+			<ns2:MarginGross origin="dat">493.2500</ns2:MarginGross>
+			<ns2:PurchasePrice origin="dat">339.13</ns2:PurchasePrice>
+			<ns2:PurchasePriceGross origin="dat">403.5700</ns2:PurchasePriceGross>
+			<ns2:LastValuationDataYear>2016</ns2:LastValuationDataYear>
+			<ns2:LastValuationDataMonth>11</ns2:LastValuationDataMonth>
+			<ns2:LastValuationDate>2016-11-07T11:02:35.045+01:00</ns2:LastValuationDate>
+			<ns2:DefaultPlatformPresent>not designed and missing</ns2:DefaultPlatformPresent>
+			<ns2:SignMilageUnit>kilometers</ns2:SignMilageUnit>
+			<ns2:Obsolete>up to date</ns2:Obsolete>
+			<ns2:DisplayGross>false</ns2:DisplayGross>
+			<ns2:DisplayRounded>true</ns2:DisplayRounded>
+			<ns2:DefaultTiresPrice origin="dat">205.00</ns2:DefaultTiresPrice>
+			<ns2:ValuationType>valuation</ns2:ValuationType>
+			<ns2:ExtendedMileageCorrection>true</ns2:ExtendedMileageCorrection>
+			<ns2:Condition>
+				<ns2:ConditionSubTotal1>753.63</ns2:ConditionSubTotal1>
+				<ns2:ConditionSubTotal1Gross>896.82</ns2:ConditionSubTotal1Gross>
+				<ns2:ConditionSubTotal2>753.63</ns2:ConditionSubTotal2>
+				<ns2:ConditionSubTotal2Gross>896.82</ns2:ConditionSubTotal2Gross>
+			</ns2:Condition>
+			<ns2:Parameters/>
+		</ns2:Valuation>
+	</ns2:Dossier>
+</ns2:Dossiers>

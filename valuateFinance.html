@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SilverDAT</title>
+    <link rel="stylesheet" href="scripts/libs/w3.css">
+    <link rel="stylesheet" href="scripts/styles.css">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <script src="scripts/libs/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="http://gold.dat.de/FinanceLine/financeline/js/externalSphinxFL.js"></script>
+    <script src="scripts/userData.js"></script>
+    <script src="scripts/appData.js"></script>
+    <script>
+        var active, xmlDom, subId;
+    </script>
+</head>
+<body>
+    <div class="w3-container" align="center">
+        <div id="logo"><a href="http://www.dat.de" target="_blank"><img src="gfx/dat.jpg"></a></div>
+        <h1>DEUTSCHE AUTOMOBIL TREUHAND GmbH</h1>
+        <a href="javascript:appFunctions.quitAppl()"><h3 style="text-transform: none">SilverDAT valuateFinance</h3></a>
+
+        <div id="div_credentials" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue round">
+                <h3>credentials</h3>
+            </div>
+            <div class="w3-container" align="left">
+                <div class="w3-container w3-half" >
+                    <p>
+                        <label>customer-number</label>
+                        <input type="text" maxlength="7" class="w3-input w3-border w3-round" id="inpCustomerNumber">
+                    </p>
+                    <p>
+                        <label>customer-login</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerLogin">
+                    </p>
+                    <p>
+                        <label>customer-signature</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpCustomerSignature">
+                    </p>
+                    </p>
+                </div>
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>interfacepartner-number</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpIpNumber">
+                    </p>
+                    <p>
+                        <label>interfacepartner-signature</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpIpSignature">
+                    </p>
+                    <p>
+                        <label>external host</label>
+                        <select class="w3-select w3-border w3-round" id="selHosts" style="width:calc(100% - 5em)"></select><button class="addRmv" id="btnAddHost">+</button><button id="btnRemoveHost" class="addRmv">-</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-container w3-blue round">
+                <h3>options</h3>
+            </div>
+            <div class="w3-container" align="left">
+                <div class="w3-container w3-half" >
+                    <p>
+                        <label>target market</label>
+                        <select class="w3-select w3-border w3-round" id="selTargetMarket"></select>
+                    </p><p>
+                        <label>language</label>
+                        <select class="w3-select w3-border w3-round" id="selLanguage"></select>
+                </p><p>
+                        <label>action</label>
+                        <select class="w3-select w3-border w3-round" id="selAction"></select>
+                </p><p>
+                    <input type="file" id="inpVxsFile" name="files1" caption="pick" style="width:5em" hidden/><button id="btnImport" style="display: none">...</button>
+                </p>
+                </div>
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>dossier-id</label>
+                        <input type="text" class="w3-input w3-border w3-round" id="inpDossierId">
+                    </p>
+                    <p>
+                        <label>dossier-type</label>
+                        <select class="w3-select w3-border w3-round" id="selDossierType"></select>
+                    </p>
+                    <p>
+                        <label>page</label>
+                        <select class="w3-select w3-border w3-round" id="selPage"></select>
+                    </p>
+                    <p align="center">
+                        <input class="w3-check ngCheck" id="chkSave" type="checkbox" checked><label class="w3-validate">save</label>
+                        <input class="w3-check ngCheck" id="chkWorkflow" type="checkbox" checked><label class="w3-validate">workflow</label>
+                    </p>
+                </div>
+
+            </div>
+            <div id="divInput" style="display: none">
+                <div class="w3-container w3-blue roundTop">
+                    <h3>input</h3>
+                </div>
+                <textarea name="txtInput" id="txtInput" class="w3-input w3-border roundBtm"></textarea>
+                <br/>
+            </div>
+            <button class="w3-btn w3-blue w3-round" onclick="start()">start integration</button><br/><br/>
+            <input class="w3-check" id="chkLocalStorage" type="checkbox" checked><label class="w3-validate">save settings</label>|&nbsp&nbsp<a href="javascript:appFunctions.clearUserData('FL');">RESTORE SETTINGS</a>
+
+        </div>
+        <div id="div_integration" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue roundTop">
+                <h3>integration</h3>
+            </div>
+            <div  id="iframe_container">
+                <iframe name="iframeFL" id="iframeFL" width="100%" height="500px"></iframe>
+            </div>
+            <br/><button class="w3-btn w3-blue w3-round" onclick="back()">quit integration</button>
+        </div>
+        <div id="div_response" class="w3-container" style="display: none">
+            <div class="w3-container w3-blue roundTop">
+                <h3>response</h3>
+                <div id="outputType" style="position: inherit; bottom:1em; right:1em">
+                    <input class="outputRender w3-radio" id="orPlain" name="outputRendering" type="radio" checked><label>vxs</label></input>
+                    <input class="outputRender w3-radio" id="orTv" name="outputRendering"  type="radio"><label>tree</label></input>
+                </div>
+            </div>
+            <textarea name="txtOut" id="txtOut" class="w3-input w3-border roundBtm" readonly></textarea>
+            <iframe id="iframeTV" class="w3-border roundBtm"></iframe>
+            <br/><button class="w3-btn w3-blue w3-round" onclick="back()">back to landing page</button>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // -- user-data/start-up --------------------------------------------------------------------------------------------------------------------------------------------------
+            var loadedFromLocalStorage = appFunctions.loadUserData("FL");
+            setTimeout(function () {
+                $("#inpCustomerNumber").val(userData.customerNumber);
+                $("#inpCustomerLogin").val(userData.customerLogin);
+                $("#inpCustomerSignature").val(userData.customerSignature);
+                $("#inpIpNumber").val(userData.interfacePartnerNumber);
+                $("#inpIpSignature").val(userData.interfacePartnerSignature);
+
+                $.each(appProperties.common.hosts.concat(userData.additionalHosts), function (i, val) {
+                    $("#selHosts").append("<option value='" + val + "'>" + val + "</option>")
+                });
+                $.each(appProperties.common.countries, function (key, val) {
+                    $("#selTargetMarket").append("<option value='" + key + "'>" + val + "</option>");
+                });
+                $.each(appProperties.common.languages, function (key, val) {
+                    $("#selLanguage").append("<option value='" + key + "'>" + val + "</option>");
+                });
+                $.each(appProperties.valuateFL.actions, function (key, val) {
+                    $("#selAction").append("<option value='" + val + "'>" + val + "</option>");
+                });
+                $.each(appProperties.valuateFL.dossierTypes, function (key, val) {
+                    $("#selDossierType").append("<option value='" + val + "'>" + val  + "</option>");
+                });
+
+                $("#selTargetMarket option[value='" + userData.targetMarket + "']").prop("selected", true);
+                $("#selLanguage option[value='" + userData.language + "']").prop("selected", true);
+
+                if (loadedFromLocalStorage) {
+                    $("#selHosts option:contains('" + userData.selectedHost + "')").prop("selected", true);
+                    $("#selAction option[value='" + userData.action + "']").prop("selected", true);
+                    $("#selDossierType option[value='" + userData.dossierType + "']").prop("selected", true);
+                    displayParameters();
+                    $("#inpDossierId").val(userData.dossierId);
+                    $("#selPage option[value='" + userData.page + "']").prop("selected", 'true');
+                    $("#txtInput").val(userData.dossier);
+                    $("#chkSave").prop("checked", userData.save);
+                    $("#chkWorkflow").prop("checked", userData.workflow);
+                } else displayParameters();
+
+                checkboxDependencies();
+                appFunctions.displayContainer(1);
+            }, 500);
+            // -- event listeners -----------------------------------------------------------------------------------------------------------------------------------------------------
+            $("#btnImport").on("click", function () { $("#inpVxsFile").trigger('click'); });
+            $("#inpVxsFile").on("change", appFunctions.handleFileOpen);
+            $(window).on("resize", appFunctions.resizeFunc);
+            $(".outputRender").on("change",appFunctions.toggleOutputRendering);
+
+            $("#btnAddHost").on("click", appFunctions.addHost);
+            $("#btnRemoveHost").on("click", appFunctions.removeHost);
+
+            $(".ngCheck").on("change", checkboxDependencies);
+            $("#selAction").on("change", displayParameters);
+
+            $("#chkLocalStorage").on("change",function(){ if (window.localStorage) localStorage.setItem("saveFL", JSON.stringify({save: $("#chkLocalStorage").prop("checked")}))});
+            if (window.localStorage && localStorage.getItem("saveFL")!=null) $("#chkLocalStorage").prop("checked", JSON.parse(localStorage.getItem("saveFL")).save);
+
+            appFunctions.resizeFunc();
+            appFunctions.toggleOutputRendering();
+            appFunctions.prepareIframeForTreeview("iframeTV");
+        });
+        // -- local Storage -----------------------------------------------------------------------------------------------------------------------------------------------------------
+        function save() { if($("#chkLocalStorage").prop("checked")) appFunctions.storeUserData("FL"); }
+        function storeObject() {
+            var storageObject = {
+                customerNumber: $("#inpCustomerNumber").val(),
+                customerLogin: $("#inpCustomerLogin").val(),
+                customerSignature: $("#inpCustomerSignature").val(),
+                interfacePartnerNumber: $("#inpIpNumber").val(),
+                interfacePartnerSignature: $("#inpIpSignature").val(),
+                selectedHost: $("#selHosts option:selected").text(),
+                additionalHosts: [],
+                targetMarket: $("#selTargetMarket option:selected").val(),
+                language: $("#selLanguage option:selected").val(),
+                dossierId: $("#inpDossierId").val(),
+                dossierType: $("#selDossierType").val(),
+                page: $("#selPage option:selected").val(),
+                dossier: $("#txtInput").val(),
+                action: $("#selAction").val(),
+                save: $("#chkSave").prop("checked"),
+                workflow: $("#chkWorkflow").prop("checked")
+            };
+            $.each($("#selHosts option").slice(appProperties.common.hosts.length), function(index, val) { storageObject.additionalHosts.push($(val).val()); });
+            return storageObject;
+        }
+        // -- controls ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        function start()    { save(); appFunctions.displayContainer(2); setUpSphinx(); }
+        function back()     { sphinx.logout(); appFunctions.clrFrame(); appFunctions.displayContainer(1); }
+
+        // -- valuateFL specific ------------------------------------------------------------------------------------------------------------------------------------------------------
+        function checkboxDependencies(event) {
+            if (event) {
+                var tar = event.target.id;
+                if (!$(event.target).prop("checked") && tar == "chkSave") $('#chkWorkflow').prop("checked", false);
+                else if ($(event.target).prop("checked") && tar == "chkWorkflow") $('#chkSave').prop("checked", true);
+            }
+        }
+        function setSelectDisabled(dossierId, dossierType, page, input) {
+            $("#inpDossierId").prop('disabled', dossierId);
+            $("#selDossierType").prop('disabled', dossierType);
+            $("#selPage").prop('disabled', page);
+            if (input && $('#divInput').css('display') == 'none') { $("#divInput").fadeIn(); $("#btnImport").css("display", ""); }
+            else if (!input && $('#divInput').css('display') != 'none') { $("#divInput").fadeOut(); $("#btnImport").css("display", "none"); }
+        }
+        function fillPageSelect() {
+            switch ($("#selAction option:selected").text()) {
+                case "changeDossier":
+                    $.each(appProperties.valuateFL.pages.evaluation, function(key, val) { $("#selPage").append("<option value='" + val + "'>[evaluation] " + val + "</option>"); });
+                    $.each(appProperties.valuateFL.pages.historicalEvaluation, function(key, val) { $("#selPage").append("<option value='" + val + "'>[historical evaluation] " + val + "</option>"); });
+                    $.each(appProperties.valuateFL.pages.compare, function(key, val) { $("#selPage").append("<option value='" + val + "'>[compare] " + val + "</option>"); });
+                    break;
+                case "importDossier":
+                    $.each(appProperties.valuateFL.pages.evaluation, function(key, val) {
+                        $("#selPage").append("<option value='" + val + "'>" + val + "</option>");
+                    });
+                    break;
+            }
+        }
+        function displayParameters() {
+            $("#selPage").find('option').remove();
+            switch ($("#selAction option:selected").text()) {
+                case "showEventList":
+                    setSelectDisabled(true, true, true, false);
+                    break;
+                case "createDossier":
+                    setSelectDisabled(true, false, true, false);
+                    break;
+                case "changeDossier":
+                    setSelectDisabled(false, true, false, false);
+                    fillPageSelect();
+                    break;
+                case "importDossier":
+                    setSelectDisabled(true, true, false, true);
+                    fillPageSelect();
+                    break;
+            }
+        }
+        function setUpSphinx() {
+            if (typeof sphinx != 'undefined') {
+                sphinx.hostUrl = "http://" + location.hostname + ":" + location.port + location.pathname;
+                sphinx.setProductUrl("http://" + $("#selHosts option:selected").text() + '/FinanceLine/');
+                sphinx.setIframeName('iframeFL');
+
+                sphinx.credentials = {
+                    customerNumber: $("#inpCustomerNumber").val(),
+                    customerLogin: $("#inpCustomerLogin").val(),
+                    customerSignature: $("#inpCustomerSignature").val(),
+                    interfacePartnerNumber: $("#inpIpNumber").val(),
+                    interfacePartnerSignature: $("#inpIpSignature").val()
+                };
+
+                sphinx.params = {
+                    datGroupHeader: 'false',
+                    datCountryIndicator: $("#selTargetMarket option:selected").val(),
+                    locale: $("#selLanguage option:selected").val(),
+                    action: $("#selAction option:selected").text(),
+                    dossierid: $("#selAction option:selected").text() == 'changeDossier' ? $("#inpDossierId").val() : "",
+                    type: $("#selAction option:selected").text() == 'createDossier' ? $("#selDossierType option:selected").text() : "",
+                    vxs: $("#selAction option:selected").text() == 'importDossier' ? $("#txtInput").val() : "",
+                    page: $("#selPage option:selected").val(),
+                    workflow: $("#chkWorkflow").prop('checked') ? 'true' : 'false',
+                    save: $("#chkSave").prop('checked') ? 'true' : 'false'
+                };
+
+                sphinx.onLoginFailure = function (response) {
+                    alert('DAT login failed!\nReason: ' + response.message);
+                    appFunctions.clrFrame();
+                    appFunctions.displayContainer(1);
+                };
+                sphinx.onFinished = function () {
+                    sphinx.exportDossier();
+                };
+
+                sphinx.afterExportDossier = function () {
+                    xmlDom = $.parseXML(sphinx.response.xml.replace(/ +(?= )/g, '').replace(/\>\s+\</g, '><'));
+                    appFunctions.resetIframe("iframeTV");
+                    if(xmlDom==null) {
+                        $("#txtOut").val("<empty/>");
+                        $("#iframeTV").contents().find("body").append($("<ul><li>Empty</li></ul>"));
+                    } else if (xmlDom.hasChildNodes) {
+                        $("#txtOut").val(appFunctions.formatRecursive(xmlDom, 0));
+                        $("#iframeTV").contents().find("body").append($(appFunctions.formatRecursive2(xmlDom)));
+                    }
+                    sphinx.logout();
+                    appFunctions.clrFrame();
+                    appFunctions.displayContainer(3);
+                };
+                sphinx.sendDossierRequest();
+            } else {
+                alert('externalSphinxFL.js not loaded.');
+                appFunctions.displayContainer(1);
+            }
+        }
+    </script>
+</body>
+</html>
